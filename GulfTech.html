@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GulfTech Resilience & Pricing Simulator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --border: #e5e7eb;
+      --radius: 18px;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-main);
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 350px) minmax(320px, 1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+      border: 1px solid var(--border);
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 3px;
+    }
+    select, input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      background: #f9fafb;
+      color: var(--text-main);
+    }
+    .row { display: flex; gap: 10px; }
+    .row > div { flex: 1; }
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+    button {
+      margin-top: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #1d4ed8; }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 8px 0 10px;
+    }
+    .metric {
+      padding: 8px 8px;
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1px solid #eef2ff;
+      font-size: 10px;
+    }
+    .metric-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 9px;
+      margin-bottom: 2px;
+    }
+    .metric-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 9px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .line {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+    .text { font-size: 11px; margin: 3px 0; }
+    .muted { color: var(--text-muted); }
+    @media (max-width: 780px) { .layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<h1>GulfTech Resilience & Pricing Simulator</h1>
+<div class="subtitle">
+  Interactive tool showing how pricing, contracts, and forecasting protect GulfTech from tariffs and supply shocks.
+</div>
+
+<div class="layout">
+  <!-- INPUTS -->
+  <div class="card">
+    <h2>Input Parameters</h2>
+
+    <label for="product">Product</label>
+    <select id="product">
+      <option value="vacuum">Vacuum Chambers</option>
+      <option value="wafer">Wafer Handling Systems</option>
+      <option value="tooling">Custom Tooling</option>
+      <option value="frames">Robotic Welded Frames</option>
+      <option value="fixtures">Precision Fixtures</option>
+    </select>
+
+    <div class="row">
+      <div>
+        <label for="location">Production Location</label>
+        <select id="location">
+          <option value="us">United States (Texas)</option>
+          <option value="my">Malaysia (Penang)</option>
+        </select>
+      </div>
+      <div>
+        <label for="margin">Profit Margin</label>
+        <select id="margin">
+          <option value="0.09">9% (Normal)</option>
+          <option value="0.06" selected>6% (Tariff Pressure)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="tariff">Tariff on U.S. Production (%)</label>
+        <input type="number" id="tariff" min="0" max="80" step="1" />
+      </div>
+      <div>
+        <label for="demand">Demand Forecast</label>
+        <select id="demand">
+          <option value="normal">Normal</option>
+          <option value="plus50">+50% Growth</option>
+          <option value="plus120">+120% AI Boom</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="contract">Contract Type</label>
+    <select id="contract">
+      <option value="options">Options Contract</option>
+      <option value="buyback">Buy-Back Contract</option>
+      <option value="longterm">Long-Term Agreement</option>
+    </select>
+
+    <label class="check"><input type="checkbox" id="pandemic" /> Include Disruption Scenario (e.g. Pandemic)</label>
+    <label class="check"><input type="checkbox" id="forecasting" checked /> Use AI-based Demand Forecasting</label>
+
+    <button onclick="simulate()">Run Simulation</button>
+  </div>
+
+  <!-- OUTPUTS -->
+  <div class="card">
+    <h2>Simulation Results</h2>
+    <div class="pill" id="recLabel">Awaiting input...</div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">U.S. Price with Tariff</div>
+        <div class="metric-value" id="usPrice">-</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Malaysia Price</div>
+        <div class="metric-value" id="myPrice">-</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Price Difference</div>
+        <div class="metric-value" id="advantage">-</div>
+      </div>
+    </div>
+
+    <div class="line"></div>
+    <div class="text" id="contractText"></div>
+    <div class="text" id="tariffText"></div>
+    <div class="text" id="pandemicText"></div>
+    <div class="text" id="forecastText"></div>
+    <div class="line"></div>
+    <div class="text muted" id="summaryText">
+      Click "Run Simulation" to see recommendations for location, contract clauses, and forecasting.
+    </div>
+  </div>
+</div>
+
+<script>
+  // Baseline data for all 5 products
+  const products = {
+    vacuum:  { name: "Vacuum Chambers", baseSp: 3200, usTariff: 39, myCost: 2400 },
+    wafer:   { name: "Wafer Handling Systems", baseSp: 2800, usTariff: 50, myCost: 2100 },
+    tooling: { name: "Custom Tooling", baseSp: 2200, usTariff: 43, myCost: 1700 },
+    frames:  { name: "Robotic Welded Frames", baseSp: 1600, usTariff: 44, myCost: 1200 },
+    fixtures:{ name: "Precision Fixtures", baseSp: 1100, usTariff: 35, myCost: 850 }
+  };
+
+  // Initialize tariff on load
+  const tariffInput = document.getElementById("tariff");
+  const productSelect = document.getElementById("product");
+  tariffInput.value = products["vacuum"].usTariff;
+  productSelect.addEventListener("change", () => {
+    tariffInput.value = products[productSelect.value].usTariff;
+  });
+
+  function formatDollar(v) { return "$" + v.toLocaleString("en-US", {maximumFractionDigits:0}); }
+
+  function simulate() {
+    const prod = products[productSelect.value];
+    const location = document.getElementById("location").value;
+    const margin = parseFloat(document.getElementById("margin").value);
+    const demandScenario = document.getElementById("demand").value;
+    const contract = document.getElementById("contract").value;
+    const pandemic = document.getElementById("pandemic").checked;
+    const forecasting = document.getElementById("forecasting").checked;
+    let tariff = parseFloat(document.getElementById("tariff").value);
+
+    // Base cost from 9% margin
+    const baseCost = prod.baseSp * (1 - 0.09);
+    const usCost = baseCost * (1 + tariff / 100);
+    const usPrice = usCost / (1 - margin);
+    const myPrice = prod.myCost / (1 - margin);
+    const diff = usPrice - myPrice;
+
+    // Update price cards
+    document.getElementById("usPrice").textContent = formatDollar(usPrice);
+    document.getElementById("myPrice").textContent = formatDollar(myPrice);
+    document.getElementById("advantage").textContent =
+      diff > 0 ? `Malaysia cheaper by ${formatDollar(diff)}` :
+      diff < 0 ? `U.S. cheaper by ${formatDollar(-diff)}` : "Equal";
+
+    // Recommendation pill
+    const rec = document.getElementById("recLabel");
+    rec.textContent = diff > 400 ? "Build in Malaysia for cost savings" :
+      diff > 100 ? "Favor Malaysia; keep U.S. backup" :
+      "Use U.S. for fast delivery orders";
+
+    // Contract text
+    const contracts = {
+      options: "Options Contract: customers reserve capacity with flexible pricing if tariffs rise.",
+      buyback: "Buy-Back Contract: supplier shares demand risk; GulfTech repurchases unsold stock at ~80% cost.",
+      longterm: "Long-Term Agreement: stable pricing for 12–24 months with tariff review beyond 20% increase."
+    };
+    document.getElementById("contractText").textContent = contracts[contract];
+
+    // Tariff clause
+    document.getElementById("tariffText").textContent =
+      "Tariff Clause: If tariffs increase by 10%, prices adjust by ~8–10% to maintain profit margin.";
+
+    // Pandemic clause
+    document.getElementById("pandemicText").textContent = pandemic
+      ? "Disruption Clause: Add a Force Majeure clause to share extra logistics costs and allow delayed delivery."
+      : "";
+
+    // Forecasting logic
+    const weeks = demandScenario === "normal" ? 1 : demandScenario === "plus50" ? 2 : 3;
+    document.getElementById("forecastText").textContent = forecasting
+      ? `AI Forecasting: Maintain ${weeks - 0.5} weeks of safety stock (30% lower shortage risk).`
+      : `Manual Planning: Hold ${weeks} weeks of safety stock for reliability.`;
+
+    // Summary
+    const chosenPrice = location === "us" ? usPrice : myPrice;
+    const site = location === "us" ? "U.S. facility" : "Malaysia plant";
+    document.getElementById("summaryText").textContent =
+      `For ${prod.name}, producing in the ${site} gives a price of ${formatDollar(chosenPrice)}. ` +
+      `Use a ${contract.replace(/([A-Z])/g, ' $1')} contract with clear tariff clauses and forecasting to stay resilient.`;
+  }
+</script>
+
+</body>
+</html>
